@@ -9,11 +9,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
@@ -27,7 +29,7 @@ public class Room {
 	
 	
 //	so like when we creating room we will be mentioning the hotel and new column in Root will be created by name of hotel_id 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="hotel_id")  //in Db it will be hotel_id
 	private Hotel hotel;
 	
@@ -53,6 +55,8 @@ public class Room {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 	
+	@OneToMany(mappedBy = "room", cascade = jakarta.persistence.CascadeType.REMOVE, orphanRemoval = true)
+	private List<inventory> inventories;
 	
 	
 	

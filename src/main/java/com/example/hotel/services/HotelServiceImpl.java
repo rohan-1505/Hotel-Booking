@@ -1,10 +1,15 @@
 package com.example.hotel.services;
 
+import java.util.List;
+
+import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.hotel.DTO.HotelDTO;
+import com.example.hotel.DTO.HotelInfoDTO;
+import com.example.hotel.DTO.RoomDTO;
 import com.example.hotel.entities.Hotel;
 import com.example.hotel.entities.Room;
 import com.example.hotel.exception.ResourcenotFoundexception;
@@ -60,9 +65,9 @@ public class HotelServiceImpl implements HotelService {
 	public void deleteHotelById(long id) {
 		Hotel hotel= hotelrepo.findById(id).orElseThrow(() -> new ResourcenotFoundexception(("Hotel not found with id: " + id)));
 		hotelrepo.deleteById(id);
-		for(Room room : hotel.getRooms()) {
-			inventoryservice.deleteFutureInventories(room);
-		}
+//		for(Room room : hotel.getRooms()) {
+//			inventoryservice.deleteFutureInventories(room);
+//		}
 	}
 
 	@Transactional
@@ -75,6 +80,14 @@ public class HotelServiceImpl implements HotelService {
 			inventoryservice.initializeRoomForaYear(room);
 		}
 		
+	}
+
+	@Override
+	public HotelInfoDTO getHotelInfoById(Long hotelid) {
+		Hotel hotel  = hotelrepo.findById(hotelid).orElseThrow(() -> new ResourcenotFoundexception(("Hotel not found with id: " + hotelid)));
+		List<RoomDTO> rooms= hotel.getRooms().stream().map((element)->modelmapper.map(element, RoomDTO.class)).toList();
+		
+		return new HotelInfoDTO(modelmapper.map(hotel, HotelDTO.class),rooms);
 	}
 
 

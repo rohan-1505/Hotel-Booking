@@ -51,12 +51,15 @@ public class inventory {
 	@JoinColumn(name="room_id")
 	private Room room;	
 	
-	private LocalDateTime date;
+	private LocalDate date;
 	
 	@Column(columnDefinition = "INTEGER DEFAULT 0")
-	private Integer bookedCount;
+	private Integer bookedCount; //Guest booked the room for that date
 	
-	private Integer totalCount;
+	@Column(columnDefinition = "INTEGER DEFAULT 0")
+	private Integer reserveCount;	
+	
+	private Integer totalCount; //total no of rooms available for that date
 	
 	@Column(precision = 5,scale = 2)
 	private BigDecimal surgeFactor;

@@ -2,7 +2,9 @@
 	
 	
 	
-	import java.time.LocalDateTime;
+	import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,12 +24,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 	
 	@Entity
 	@Getter
 	@Setter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
 	public class Booking {
 		
 		@Id
@@ -48,8 +56,8 @@ import lombok.Setter;
 		
 		
 		private Integer roomCount; //COunt the no of rooms to booked through one Id
-		private LocalDateTime checkedInDate;
-		private LocalDateTime checkedOutDate;
+		private LocalDate checkInDate;
+		private LocalDate checkOutDate;
 		
 		@CreationTimestamp
 		private LocalDateTime createdAt;
@@ -57,9 +65,6 @@ import lombok.Setter;
 		@UpdateTimestamp
 		private LocalDateTime updatedAt;
 		
-		@OneToOne(fetch = FetchType.LAZY)
-		@JoinColumn(name = "payment_id")
-		private Payment payment;
 		
 		@Enumerated(EnumType.STRING)
 		private BookingStatus bookingStatus;
@@ -71,4 +76,6 @@ import lombok.Setter;
 		    inverseJoinColumns = @JoinColumn(name = "guest_id")
 		)
 		private Set<Guest> guests;
+		
+		private BigDecimal amount;
 	}

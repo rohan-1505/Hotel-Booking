@@ -1,6 +1,9 @@
 package com.example.hotel.services;
 
+import org.jspecify.annotations.Nullable;
+
 import com.example.hotel.DTO.HotelDTO;
+import com.example.hotel.DTO.HotelInfoDTO;
 import com.example.hotel.entities.Hotel;
 
 public interface HotelService {
@@ -14,6 +17,8 @@ public interface HotelService {
 	void deleteHotelById(long id);
 	
 	void activateHotel(long id);
+
+	HotelInfoDTO getHotelInfoById(Long hotelid);
 
 	
 
